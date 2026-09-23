@@ -1,0 +1,33 @@
+
+pipeline {
+    agent any
+
+    stages {
+        stage('checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Maven Build and Test') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t jenkins-docker-cicd:1.0 .'
+            }
+        }
+
+        stage('Deploy Docker Container') {
+            steps {
+                sh '''
+                    docker rm -f jenkins-docker-app || true
+                    docker run -d --name jenkins-docker-app -p 8081:8080 jenkins-docker-cicd:1.0
+                '''
+            }
+        }
+    }
+}
