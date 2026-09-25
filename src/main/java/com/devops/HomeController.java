@@ -8,6 +8,6 @@ public class HomeController {
     
     @GetMapping("/")
     public String home() {
-        return "Hello from Jenkins CI/CD - version 2";
+        return "Hello from Jenkins CI/CD - version 2 , Maven Application is Running Successfully.";
     }
 }
